@@ -237,4 +237,18 @@ export const MapsService = {
   async fetchLocationSuggestions(query: string): Promise<LocationPoint[]> {
     return fetchSuggestions(query);
   },
+
+  /** Optional Google Maps initialization helper */
+  async initGoogleMaps(apiKey: string): Promise<boolean> {
+    if (!apiKey) return false;
+    try {
+      const { Loader } = await import('@googlemaps/js-api-loader');
+      const loader = new Loader({ apiKey, version: 'weekly' });
+      await loader.load();
+      return true;
+    } catch (e) {
+      console.warn('[MapsService] Google Maps loader failed', e);
+      return false;
+    }
+  },
 };
