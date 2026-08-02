@@ -151,3 +151,14 @@ export interface UserPreferenceProfile {
   totalTripsCompleted: number;
   totalDistanceKm: number;
 }
+
+export interface SongItem {
+  id: string;
+  title: string;
+  artist: string;
+  duration: number; // seconds
+  url: string;
+  isLocal: boolean;
+  file?: File;
+}
+

@@ -7,6 +7,7 @@ import { MapView } from '../navigation/MapView';
 import { RouteSearchBar } from '../navigation/RouteSearchBar';
 import { TurnByTurnCard } from '../navigation/TurnByTurnCard';
 import { AICompanionPanel } from '../ai/AICompanionPanel';
+import { MusicPlayerPanel } from '../music/MusicPlayerPanel';
 import { ChatbotWidget } from '../ai/ChatbotWidget';
 import { EmergencySOSModal } from '../sos/EmergencySOSModal';
 import { JourneySummaryModal } from '../summary/JourneySummaryModal';
@@ -27,24 +28,32 @@ export const CockpitLayout: React.FC = () => {
       <TopStatusBar />
 
       {/* Main Infotainment Display Stage Area */}
-      <main className="flex-1 p-4 overflow-hidden relative grid grid-cols-1 lg:grid-cols-12 gap-4">
-        {/* Left / Primary Navigation Display Area (8 Columns on desktop) */}
-        <div className="lg:col-span-8 h-full flex flex-col gap-3 relative">
-          <RouteSearchBar />
-          
-          <div className="flex-1 relative overflow-hidden">
-            <MapView />
+      <main className="flex-1 p-4 overflow-hidden relative">
+        {activeTab === 'music' ? (
+          <div className="w-full h-full">
+            <MusicPlayerPanel />
           </div>
+        ) : (
+          <div className="w-full h-full grid grid-cols-1 lg:grid-cols-12 gap-4">
+            {/* Left / Primary Navigation Display Area (8 Columns on desktop) */}
+            <div className="lg:col-span-8 h-full flex flex-col gap-3 relative">
+              <RouteSearchBar />
+              
+              <div className="flex-1 relative overflow-hidden">
+                <MapView />
+              </div>
 
-          <TurnByTurnCard />
-        </div>
+              <TurnByTurnCard />
+            </div>
 
-        {/* Right / AI Companion & Context Intelligence Panel (4 Columns on desktop) */}
-        <div className={`lg:col-span-4 h-full relative transition-all ${
-          activeTab === 'ai' ? 'block' : 'hidden lg:block'
-        }`}>
-          <AICompanionPanel />
-        </div>
+            {/* Right / AI Companion & Context Intelligence Panel (4 Columns on desktop) */}
+            <div className={`lg:col-span-4 h-full relative transition-all ${
+              activeTab === 'ai' ? 'block' : 'hidden lg:block'
+            }`}>
+              <AICompanionPanel />
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Bottom Touchscreen Control Dock */}
