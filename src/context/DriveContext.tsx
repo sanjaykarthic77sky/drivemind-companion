@@ -361,7 +361,16 @@ export const DriveProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setIsLoading(true);
     const scenario = ScenarioSimulator.getScenario(type);
     setActiveScenario(scenario);
-    setWeather(scenario.weather);
+
+    // Retain user's selected source and destination if already chosen
+    const src = currentRoute ? currentRoute.source : scenario.defaultSource;
+    const dst = currentRoute ? currentRoute.destination : scenario.defaultDestination;
+
+    const updatedWeather: WeatherInfo = {
+      ...scenario.weather,
+      locationName: dst.name || scenario.weather.locationName,
+    };
+    setWeather(updatedWeather);
     setDriveDurationHours(scenario.continuousDriveHours);
     setCurrentStepIndex(0);
     setIsSimulatingNav(false);
@@ -373,9 +382,9 @@ export const DriveProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
 
     try {
-      const route = await MapsService.calculateRoute(scenario.defaultSource, scenario.defaultDestination);
+      const route = await MapsService.calculateRoute(src, dst);
       setCurrentRoute(route);
-      evaluateSystem(route, scenario.weather, scenario, scenario.continuousDriveHours);
+      evaluateSystem(route, updatedWeather, scenario, scenario.continuousDriveHours);
     } catch (e) {
       console.error('Scenario route error:', e);
     }
@@ -389,7 +398,12 @@ export const DriveProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     try {
       const route = await MapsService.calculateRoute(source, destination);
       setCurrentRoute(route);
-      evaluateSystem(route, weather, activeScenario, driveDurationHours);
+      const updatedWeather: WeatherInfo = {
+        ...weather,
+        locationName: route?.destination?.name || weather.locationName,
+      };
+      setWeather(updatedWeather);
+      evaluateSystem(route, updatedWeather, activeScenario, driveDurationHours);
     } catch (e) {
       console.error('Custom route error:', e);
     }

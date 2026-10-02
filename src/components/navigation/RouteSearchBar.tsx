@@ -25,6 +25,14 @@ export const RouteSearchBar: React.FC = () => {
   const sourceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const destTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Keep input text synced with currentRoute when not actively focused
+  useEffect(() => {
+    if (currentRoute) {
+      if (focusField !== 'source') setSourceText(currentRoute.source.name);
+      if (focusField !== 'dest') setDestText(currentRoute.destination.name);
+    }
+  }, [currentRoute, focusField]);
+
   // Live autocomplete – source
   useEffect(() => {
     if (sourceTimer.current) clearTimeout(sourceTimer.current);
