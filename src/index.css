@@ -86,3 +86,15 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 240, 255, 0.6);
 }
+
+/* Custom CSS filter to invert standard OpenStreetMap tiles into a futuristic dark cockpit theme */
+.map-tiles-dark,
+.leaflet-tile {
+  filter: invert(100%) hue-rotate(180deg) brightness(85%) contrast(90%) !important;
+}
+
+.leaflet-container {
+  background: #070A12 !important;
+}
+
+

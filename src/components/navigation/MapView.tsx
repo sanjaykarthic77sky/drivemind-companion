@@ -26,15 +26,21 @@ export const MapView: React.FC = () => {
       attributionControl: true,
     });
 
-    // CartoDB Dark Matter – premium dark tile layer (no key required)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    // Standard OpenStreetMap tiles with custom CSS filters for dark mode (no API key required)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
-      subdomains: 'abcd',
-      attribution: '© OpenStreetMap, © CARTO',
+      className: 'map-tiles-dark',
+      attribution: '© OpenStreetMap contributors',
     }).addTo(map);
 
     mapRef.current = map;
     setMapReady(true);
+
+    return () => {
+      map.remove();
+      mapRef.current = null;
+      setMapReady(false);
+    };
   }, []);
 
   // Handle native browser fullscreen change events
